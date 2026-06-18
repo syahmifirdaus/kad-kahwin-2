@@ -69,8 +69,8 @@ export default function InviteClient() {
     () => ({
       groom: "SYAHMI",
       bride: "HANIS",
-      dateText: "SABTU • 20.06.26",
-      hijriText: "5 Muharram",
+      dateText: "JUMAAT • 24.07.26",
+      hijriText: "9 Safar 1448H",
       venue: "Savanna Hill Resort\nAlamanda Ballroom, Level 6\nUlu Tiram, Johor",
       time: "11:00 AM – 4:00 PM",
       phone1: "+60123456789",
@@ -90,19 +90,19 @@ export default function InviteClient() {
       venueTitle: "TEMPAT",
       dateTitle: "TARIKH",
       timeTitle: "WAKTU",
-      dateISO: "2026-06-20",
+      dateISO: "2026-07-24",
       startTime: "11:00",
       endTime: "17:00",
       timezone: "Asia/Kuala_Lumpur",
 
-      // file must be: public/theme/floral-frame.png
-      floralFrame: "/theme/floral-frame.png",
+      // file must be: public/theme/blue .jpg
+      floralFrame: "/theme/blue%20.jpg",
 
       // gallery photos (extracted from your video)
       gallery: ["/gallery/kad-photo-2.png", "/gallery/kad-photo-1.png", "/gallery/kad-photo-3.png"],
 
-      // countdown date: 20/6/2026
-      countdownISO: "2026-06-20T00:00:00+08:00",
+      // countdown date: 24/7/2026
+      countdownISO: "2026-07-24T00:00:00+08:00",
 
       // text blocks
       doaText:
@@ -302,9 +302,9 @@ export default function InviteClient() {
 
   return (
     <div
-      className="min-h-screen text-[#c7777a] font-playfair-regular"
+      className="min-h-screen text-[#10354d] font-playfair-regular"
       style={{
-        backgroundImage: `url(${wedding.floralFrame})`,
+        backgroundImage: `url("${wedding.floralFrame}")`,
         backgroundRepeat: "no-repeat",
         backgroundPosition: "center",
         backgroundSize: "cover",
@@ -326,7 +326,7 @@ export default function InviteClient() {
             }
           }}
             aria-label={muted ? "Unmute" : "Mute"}
-            className="fixed right-4 top-4 z-[70] rounded-full bg-white/80 p-2 shadow-md text-[#d07a7d]"
+            className="fixed right-4 top-4 z-[70] rounded-full bg-white/85 p-2 text-[#10354d] shadow-md"
           >
             {muted ? <IconMute /> : <IconVolume />}
           </button>
@@ -336,7 +336,7 @@ export default function InviteClient() {
             <div
               className="absolute inset-0"
               style={{
-                backgroundImage: `url(${wedding.floralFrame})`,
+                backgroundImage: `url("${wedding.floralFrame}")`,
                 backgroundRepeat: "no-repeat",
                 backgroundPosition: "center",
                 backgroundSize: "cover",
@@ -348,18 +348,18 @@ export default function InviteClient() {
                 {wedding.parentsTitle}
               </div>
               <div className="fade-in delay-2 mt-8 font-priestacy font-normal text-[56px] leading-[0.98] text-[#2c2a2a] sm:text-[70px]">
-                {formatDisplayName(wedding.bride)}
+                {formatDisplayName(wedding.groom)}
                 <br />
                 <span className="inline-block py-2 font-normal text-[48px] leading-none opacity-95 sm:text-[58px]">
                   &amp;
                 </span>
                 <br />
-                {formatDisplayName(wedding.groom)}
+                {formatDisplayName(wedding.bride)}
               </div>
-              <div className="fade-in delay-3 mt-8 font-playfair-regular text-[14px] tracking-[0.12em] text-[#6b6677] sm:text-[14px]">
+              <div className="fade-in delay-3 mt-8 font-playfair-regular text-[14px] tracking-[0.12em] text-[#143a55] sm:text-[14px]">
                 {wedding.dateText}
               </div>
-              <div className="fade-in delay-3 mt-2 font-playfair-regular text-[14px] tracking-[0.04em] text-[#766f86]/85 sm:text-[14px]">
+              <div className="fade-in delay-3 mt-2 font-playfair-regular text-[14px] tracking-[0.04em] text-[#143a55]/85 sm:text-[14px]">
                 {wedding.hijriText}
               </div>
             </div>
@@ -367,15 +367,15 @@ export default function InviteClient() {
 
           {/* INVITATION */}
           <Section key={`inv-${revealKey}`} delay={200}>
-            <div className="relative overflow-hidden rounded-[28px] bg-[#fbf6ef] shadow-xl">
+            <div className="relative overflow-hidden rounded-[28px] bg-white/86 shadow-xl">
               <div
                 className="absolute inset-0"
                 style={{
-                  backgroundImage: `url(${wedding.floralFrame})`,
+                  backgroundImage: `url("${wedding.floralFrame}")`,
                   backgroundRepeat: "no-repeat",
                   backgroundPosition: "center",
                   backgroundSize: "cover",
-                  opacity: 0.22,
+                  opacity: 0.18,
                 }}
               />
               <div className="relative z-10 px-6 py-10 text-center text-[#1f1f1f]">
@@ -462,7 +462,7 @@ export default function InviteClient() {
           <Section key={`rsvp-${revealKey}`} delay={1000}>
         <div
           id="rsvpBox"
-          className="rounded-2xl border border-[#d07a7d]/30 bg-white/70 p-5 text-left"
+          className="rounded-2xl border border-[#10354d]/25 bg-white/76 p-5 text-left"
         >
           <div className="text-center text-[12px] tracking-[0.2em] text-[#1f1f1f]">RSVP</div>
 
@@ -495,7 +495,7 @@ export default function InviteClient() {
 
             <button
               disabled={isSubmitting}
-              className="w-full rounded-xl bg-[#e7d8c6] py-3 text-sm text-black/70"
+              className="w-full rounded-xl bg-[#10354d] py-3 text-sm text-white"
               onClick={submitRSVP}
             >
               {isSubmitting ? "Menyimpan..." : "Hantar"}
@@ -518,7 +518,7 @@ export default function InviteClient() {
             .input {
               width: 100%;
               border-radius: 12px;
-              border: 1px solid rgba(208, 122, 125, 0.25);
+              border: 1px solid rgba(16, 53, 77, 0.25);
               background: rgba(255, 255, 255, 0.75);
               padding: 12px 14px;
               font-size: 16px; /* prevent iPhone zoom */
@@ -667,7 +667,7 @@ function InfoBlock({ title, body }: { title: string; body: string }) {
 function LineItem({ left, right }: { left: string; right: string }) {
   return (
     <div className="flex items-center justify-between text-[13px]">
-      <div className="font-semibold text-[#d07a7d]">{left}</div>
+      <div className="font-semibold text-[#10354d]">{left}</div>
       <div className="opacity-90">{right}</div>
     </div>
   );
@@ -742,8 +742,8 @@ function BottomBar({
   onLocation?: () => void;
 }) {
   return (
-    <div className="fixed bottom-0 left-0 right-0 z-50 border-t border-black/5 bg-[#f1ebe3] pb-[env(safe-area-inset-bottom)]">
-      <div className="mx-auto flex max-w-[420px] items-center justify-around px-8 py-2 text-[#c7777a]">
+    <div className="fixed bottom-0 left-0 right-0 z-50 border-t border-[#10354d]/10 bg-[#eef5f8]/92 pb-[env(safe-area-inset-bottom)] backdrop-blur">
+      <div className="mx-auto flex max-w-[420px] items-center justify-around px-8 py-2 text-[#10354d]">
         <button onClick={onCall} aria-label="Call" className="flex flex-col items-center gap-1 opacity-90">
           <IconPhone />
           <span className="text-[10px] tracking-[0.08em]">Hubungi</span>
@@ -796,20 +796,20 @@ function LocationPrompt({
         <div className="mt-4 grid gap-3">
           <button
             onClick={openWaze}
-            className="w-full rounded-xl border border-[#d07a7d]/40 px-4 py-3 text-sm text-[#d07a7d]"
+            className="w-full rounded-xl border border-[#10354d]/40 px-4 py-3 text-sm text-[#10354d]"
           >
             Buka Waze
           </button>
           <button
             onClick={openGoogleMap}
-            className="w-full rounded-xl border border-[#d07a7d]/40 px-4 py-3 text-sm text-[#d07a7d]"
+            className="w-full rounded-xl border border-[#10354d]/40 px-4 py-3 text-sm text-[#10354d]"
           >
             Buka Google Maps
           </button>
         </div>
         <button
           onClick={onClose}
-          className="mt-4 w-full rounded-xl bg-[#e7d8c6] py-2 text-sm text-black/70"
+          className="mt-4 w-full rounded-xl bg-[#dbe8ee] py-2 text-sm text-[#10354d]"
         >
           Batal
         </button>
@@ -833,14 +833,14 @@ function CallPrompt({
           {options.map((opt) => (
             <div
               key={opt.phone}
-              className="flex items-center justify-between rounded-xl border border-[#d07a7d]/40 px-4 py-3 text-sm text-[#d07a7d]"
+              className="flex items-center justify-between rounded-xl border border-[#10354d]/40 px-4 py-3 text-sm text-[#10354d]"
             >
               <div className="text-left font-medium">{opt.name}</div>
               <div className="flex items-center gap-3">
                 <a
                   href={`tel:${opt.phone}`}
                   aria-label={`Call ${opt.name}`}
-                  className="rounded-full border border-[#d07a7d]/40 p-2 text-[#d07a7d]"
+                  className="rounded-full border border-[#10354d]/40 p-2 text-[#10354d]"
                 >
                   <IconPhone />
                 </a>
@@ -849,7 +849,7 @@ function CallPrompt({
                   target="_blank"
                   rel="noreferrer"
                   aria-label={`WhatsApp ${opt.name}`}
-                  className="rounded-full border border-[#d07a7d]/40 p-2 text-[#d07a7d]"
+                  className="rounded-full border border-[#10354d]/40 p-2 text-[#10354d]"
                 >
                   <IconWhatsApp />
                 </a>
@@ -859,7 +859,7 @@ function CallPrompt({
         </div>
         <button
           onClick={onClose}
-          className="mt-4 w-full rounded-xl bg-[#e7d8c6] py-2 text-sm text-black/70"
+          className="mt-4 w-full rounded-xl bg-[#dbe8ee] py-2 text-sm text-[#10354d]"
         >
           Batal
         </button>
@@ -946,7 +946,7 @@ function CalendarPrompt({
         <div className="mt-4 grid grid-cols-2 gap-3">
           <button
             onClick={downloadIcs}
-            className="rounded-xl border border-[#d07a7d]/40 px-4 py-3 text-sm text-[#d07a7d]"
+            className="rounded-xl border border-[#10354d]/40 px-4 py-3 text-sm text-[#10354d]"
           >
             Apple Calendar
           </button>
@@ -954,14 +954,14 @@ function CalendarPrompt({
             href={googleUrl}
             target="_blank"
             rel="noreferrer"
-            className="rounded-xl border border-[#d07a7d]/40 px-4 py-3 text-sm text-[#d07a7d]"
+            className="rounded-xl border border-[#10354d]/40 px-4 py-3 text-sm text-[#10354d]"
           >
             Google Calendar
           </a>
         </div>
         <button
           onClick={onClose}
-          className="mt-4 w-full rounded-xl bg-[#e7d8c6] py-2 text-sm text-black/70"
+          className="mt-4 w-full rounded-xl bg-[#dbe8ee] py-2 text-sm text-[#10354d]"
         >
           Batal
         </button>
@@ -974,11 +974,11 @@ function ThanksPrompt({ onClose }: { onClose: () => void }) {
   return (
     <div className="fixed inset-0 z-[60] flex items-center justify-center bg-black/30 p-6">
       <div className="w-full max-w-[340px] rounded-2xl bg-white p-6 text-center shadow-xl">
-        <div className="text-[16px] font-semibold text-[#d07a7d]">Terima Kasih!</div>
+        <div className="text-[16px] font-semibold text-[#10354d]">Terima Kasih!</div>
         <div className="mt-2 text-sm text-black/60">RSVP anda telah diterima.</div>
         <button
           onClick={onClose}
-          className="mt-5 w-full rounded-xl bg-[#e7d8c6] py-2 text-sm text-black/70"
+          className="mt-5 w-full rounded-xl bg-[#dbe8ee] py-2 text-sm text-[#10354d]"
         >
           Tutup
         </button>
@@ -1005,7 +1005,7 @@ function WishPrompt({
   return (
     <div className="fixed inset-0 z-[60] flex items-center justify-center bg-black/30 p-6">
       <div className="w-full max-w-[380px] rounded-2xl bg-white p-6 text-left shadow-xl">
-        <div className="text-center text-[14px] font-semibold text-[#d07a7d]">Tulis Ucapan</div>
+        <div className="text-center text-[14px] font-semibold text-[#10354d]">Tulis Ucapan</div>
         <div className="mt-4 grid gap-3">
           <input
             className="input"
@@ -1023,13 +1023,13 @@ function WishPrompt({
         <div className="mt-4 grid grid-cols-2 gap-3">
           <button
             onClick={onClose}
-            className="rounded-xl border border-[#d07a7d]/40 px-4 py-2 text-sm text-[#d07a7d]"
+            className="rounded-xl border border-[#10354d]/40 px-4 py-2 text-sm text-[#10354d]"
           >
             Batal
           </button>
           <button
             onClick={onSubmit}
-            className="rounded-xl bg-[#e7d8c6] px-4 py-2 text-sm text-black/70"
+            className="rounded-xl bg-[#10354d] px-4 py-2 text-sm text-white"
           >
             Hantar
           </button>
@@ -1062,7 +1062,7 @@ function FloatingDots() {
           width: 10px;
           height: 10px;
           border-radius: 999px;
-          background: #d7c1a2;
+          background: #9ab3c0;
           animation: floatUp linear infinite;
           filter: blur(0.2px);
         }
@@ -1113,7 +1113,7 @@ function OpeningEnvelope({
     <div
       className={`fixed inset-0 z-50 overflow-hidden transition-opacity duration-500 ${anim ? "opacity-0" : "opacity-100"}`}
       style={{
-        backgroundImage: `url(${floralFrame})`,
+        backgroundImage: `url("${floralFrame}")`,
         backgroundSize: "cover",
         backgroundPosition: "center",
         backgroundRepeat: "no-repeat",
@@ -1149,7 +1149,7 @@ function OpeningEnvelope({
       <style jsx>{`
         .open-pill {
           border-radius: 999px;
-          background: linear-gradient(135deg, #8052f2, #6338de);
+          background: linear-gradient(135deg, #174965, #09283d);
           color: white;
           border: none;
           padding: 10px 24px;
@@ -1157,7 +1157,7 @@ function OpeningEnvelope({
           font-size: 15px;
           font-weight: 700;
           letter-spacing: 0.04em;
-          box-shadow: 0 12px 24px rgba(92, 54, 222, 0.35);
+          box-shadow: 0 12px 24px rgba(9, 40, 61, 0.28);
         }
         @media (min-width: 640px) {
           .open-pill {
