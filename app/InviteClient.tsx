@@ -75,10 +75,9 @@ export default function InviteClient() {
         "Grand Ballroom Bora Ombak\nJalan P5/5, Presint 5\n62200 Putrajaya\nWilayah Persekutuan Putrajaya",
       time: "8:00 PM – 11:00 PM",
       phone1: "+60123456789",
-      wazeUrl:
-        "https://www.waze.com/live-map/directions/my/wilayah-persekutuan-putrajaya/putrajaya/boraombak-@-marina-putrajaya-or-wedding-and-event-venue?to=place.ChIJFbvEIAC3zTER3kbhFGin_dg",
+      wazeUrl: "waze://?ll=2.9012895,101.6703671&navigate=yes",
       googleMapUrl:
-        "https://www.google.com/maps/dir/BoraOmbak+@+Marina+Putrajaya+%7C+Wedding+%26+Event+Venue,+1,+Jalan+P5%2F5,+Presint+5,+62200+Putrajaya/DoubleTree+by+Hilton+Putrajaya+Lakeside,+2,+Jalan+P5%2F5,+Presint+5,+62200+Putrajaya/@2.9007971,101.6678383,17z/data=!3m1!4b1!4m14!4m13!1m5!1m1!1s0x31cdb70020c4bb15:0xd8fda76814e146de!2m2!1d101.6703671!2d2.9012895!1m5!1m1!1s0x31cdb73cc743b8c9:0xac4d51cd6418d93f!2m2!1d101.6697543!2d2.9003165!3e0?entry=ttu&g_ep=EgoyMDI2MDYxNi4wIKXMDSoASAFQAw%3D%3D",
+        "https://www.google.com/maps/dir//BoraOmbak+@+Marina+Putrajaya+%7C+Wedding+%26+Event+Venue,+1,+Jalan+P5%2F5,+Presint+5,+62200+Putrajaya/@2.9012743,101.6677376,17z/data=!4m17!1m7!3m6!1s0x31cdb70020c4bb15:0xd8fda76814e146de!2sBoraOmbak+@+Marina+Putrajaya+%7C+Wedding+%26+Event+Venue!8m2!3d2.9012743!4d101.6703125!16s%2Fg%2F11w_vv7380!4m8!1m0!1m5!1m1!1s0x31cdb70020c4bb15:0xd8fda76814e146de!2m2!1d101.6703671!2d2.9012895!3e0?entry=ttu&g_ep=EgoyMDI2MDYxNi4wIKXMDSoASAFQAw%3D%3D",
       videoUrl: "https://example.com/video",
 
       parentsTitle: "Walimatul Urus",
@@ -931,7 +930,7 @@ function LocationPrompt({
   onClose: () => void;
 }) {
   const openWaze = () => {
-    window.open(wazeUrl, "_blank", "noopener,noreferrer");
+    window.location.href = wazeUrl;
     onClose();
   };
 
