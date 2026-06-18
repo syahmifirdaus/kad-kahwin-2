@@ -248,32 +248,39 @@ export default function InviteClient() {
     setIsSubmitting(true);
 
     try {
+      const payload = { name: trimmedName, pax, attending };
       const { data: existingRows, error: lookupError } = await supabase
         .from("rsvp")
         .select("name")
         .eq("name", trimmedName)
         .limit(1);
 
-      if (lookupError) {
-        setStatus(`Failed: ${lookupError.message}`);
-        return;
+      const existingName = lookupError ? undefined : existingRows?.[0]?.name;
+      let error = null;
+      let updatedExisting = false;
+
+      if (existingName) {
+        const updateResult = await supabase.from("rsvp").update(payload).eq("name", existingName);
+        error = updateResult.error;
+        updatedExisting = !error;
       }
 
-      const existingName = existingRows?.[0]?.name;
-      const payload = { name: trimmedName, pax, attending };
-      const { error } = existingName
-        ? await supabase.from("rsvp").update(payload).eq("name", existingName)
-        : await supabase.from("rsvp").insert(payload);
+      if (!existingName || error) {
+        const insertResult = await supabase.from("rsvp").insert(payload);
+        error = insertResult.error;
+        updatedExisting = false;
+      }
 
       if (!error) {
-        setStatus(existingName ? "RSVP dikemaskini. Terima Kasih!" : "Terima Kasih!");
+        setStatus(updatedExisting ? "RSVP dikemaskini. Terima Kasih!" : "Terima Kasih!");
         setShowThanksPrompt(true);
         loadCounts();
       } else {
-        setStatus(`Failed: ${error.message}`);
+        setStatus(`RSVP belum disimpan: ${error.message}`);
       }
-    } catch {
-      setStatus("Network error");
+    } catch (error) {
+      const message = error instanceof Error ? error.message : "Network error";
+      setStatus(`RSVP belum disimpan: ${message}`);
     } finally {
       setIsSubmitting(false);
     }
@@ -282,10 +289,21 @@ export default function InviteClient() {
   function addWish(name: string, text: string) {
     const t = text.trim();
     if (!t) return;
+    const wishName = name.trim() || "Tetamu";
+    const nextWish = { name: wishName, text: t };
+
+    setWishes((current) => {
+      const withoutDuplicate = current.filter(
+        (wish) =>
+          wish.name.trim().toLowerCase() !== wishName.toLowerCase() ||
+          wish.text.trim().toLowerCase() !== t.toLowerCase()
+      );
+      return [nextWish, ...withoutDuplicate].slice(0, 12);
+    });
+    setStatus("Ucapan dipaparkan.");
 
     (async () => {
       try {
-        const wishName = name.trim() || "Tetamu";
         // Support multiple table schemas that may exist in Supabase.
         const attempts = [
           () => supabase.from("wishes").insert({ name: wishName, text: t }),
@@ -303,7 +321,6 @@ export default function InviteClient() {
         }
 
         if (saved) {
-          setWishes((current) => [{ name: wishName, text: t }, ...current].slice(0, 12));
           setStatus("Ucapan disimpan.");
         } else {
           setStatus("Ucapan belum disimpan ke server. Semak polisi atau kolum wishes.");
@@ -1081,13 +1098,17 @@ function CalendarPrompt({
 
 function ThanksPrompt({ onClose }: { onClose: () => void }) {
   return (
-    <div className="fixed inset-0 z-[60] flex items-center justify-center bg-black/30 p-6">
-      <div className="w-full max-w-[340px] rounded-2xl bg-white p-6 text-center shadow-xl">
-        <div className="text-[16px] font-semibold text-[#10354d]">Terima Kasih!</div>
-        <div className="mt-2 text-sm text-black/60">RSVP anda telah diterima.</div>
+    <div className="fixed inset-0 z-[60] flex items-center justify-center bg-black/32 p-6">
+      <div className="w-full max-w-[380px] rounded-[28px] bg-white px-8 py-10 text-center shadow-2xl">
+        <div className="font-playfair-bold text-[30px] font-semibold leading-tight text-[#d78391]">
+          Terima Kasih!
+        </div>
+        <div className="mt-8 font-playfair-regular text-[24px] leading-snug text-black/55">
+          RSVP anda telah diterima.
+        </div>
         <button
           onClick={onClose}
-          className="mt-5 w-full rounded-xl bg-[#dbe8ee] py-2 text-sm text-[#10354d]"
+          className="mt-10 w-full rounded-[22px] bg-[#ead6c3] py-4 font-playfair-regular text-[24px] text-[#2c2a2a]"
         >
           Tutup
         </button>
