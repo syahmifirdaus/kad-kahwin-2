@@ -240,21 +240,33 @@ export default function InviteClient() {
   // ==============================
   async function submitRSVP() {
     if (isSubmitting) return;
-    if (!fullName.trim()) return setStatus("Sila isi nama.");
+    const trimmedName = fullName.trim();
+    if (!trimmedName) return setStatus("Sila isi nama.");
     const pax = Number.parseInt(paxInput.trim(), 10);
-    if (!Number.isFinite(pax) || pax < 1) return setStatus("Sila isi jumlah pax yang sah.");
+    if (!Number.isFinite(pax) || ![1, 2].includes(pax)) return setStatus("Sila pilih jumlah pax yang sah.");
     setStatus("Saving...");
     setIsSubmitting(true);
 
     try {
-      const { error } = await supabase.from("rsvp").insert({
-        name: fullName,
-        pax,
-        attending,
-      });
+      const { data: existingRows, error: lookupError } = await supabase
+        .from("rsvp")
+        .select("name")
+        .eq("name", trimmedName)
+        .limit(1);
+
+      if (lookupError) {
+        setStatus(`Failed: ${lookupError.message}`);
+        return;
+      }
+
+      const existingName = existingRows?.[0]?.name;
+      const payload = { name: trimmedName, pax, attending };
+      const { error } = existingName
+        ? await supabase.from("rsvp").update(payload).eq("name", existingName)
+        : await supabase.from("rsvp").insert(payload);
 
       if (!error) {
-        setStatus("Terima Kasih!");
+        setStatus(existingName ? "RSVP dikemaskini. Terima Kasih!" : "Terima Kasih!");
         setShowThanksPrompt(true);
         loadCounts();
       } else {
@@ -291,7 +303,8 @@ export default function InviteClient() {
         }
 
         if (saved) {
-          await loadWishes();
+          setWishes((current) => [{ name: wishName, text: t }, ...current].slice(0, 12));
+          setStatus("Ucapan disimpan.");
         } else {
           setStatus("Ucapan belum disimpan ke server. Semak polisi atau kolum wishes.");
         }
@@ -484,6 +497,7 @@ export default function InviteClient() {
             />
             <ThemedSelect
               value={paxInput}
+              menuPlacement="top"
               options={[
                 { value: "1", label: "1 pax" },
                 { value: "2", label: "2 pax" },
@@ -551,7 +565,7 @@ export default function InviteClient() {
               z-index: 1;
             }
             .themed-select.is-open {
-              z-index: 30;
+              z-index: 80;
             }
             .themed-select-trigger {
               cursor: pointer;
@@ -568,6 +582,10 @@ export default function InviteClient() {
               background: rgba(247, 251, 253, 0.96);
               box-shadow: 0 18px 38px rgba(9, 40, 61, 0.2);
               backdrop-filter: blur(10px);
+            }
+            .themed-select-menu.is-top {
+              top: auto;
+              bottom: calc(100% + 8px);
             }
             .themed-select-option {
               display: flex;
@@ -703,10 +721,12 @@ function ThemedSelect({
   value,
   options,
   onChange,
+  menuPlacement = "bottom",
 }: {
   value: string;
   options: Array<{ value: string; label: string }>;
   onChange: (value: string) => void;
+  menuPlacement?: "top" | "bottom";
 }) {
   const [open, setOpen] = useState(false);
   const rootRef = React.useRef<HTMLDivElement | null>(null);
@@ -745,7 +765,7 @@ function ThemedSelect({
       </button>
 
       {open ? (
-        <div className="themed-select-menu" role="listbox">
+        <div className={`themed-select-menu ${menuPlacement === "top" ? "is-top" : ""}`} role="listbox">
           {options.map((option) => (
             <button
               key={option.value}
@@ -1021,33 +1041,6 @@ function CalendarPrompt({
     `&location=${encodeURIComponent(wedding.venue)}` +
     `&ctz=${encodeURIComponent(wedding.timezone)}`;
 
-  const downloadIcs = () => {
-    const ics = [
-      "BEGIN:VCALENDAR",
-      "VERSION:2.0",
-      "PRODID:-//kad-kahwin//invite//EN",
-      "CALSCALE:GREGORIAN",
-      "BEGIN:VEVENT",
-      `DTSTART:${start}`,
-      `DTEND:${end}`,
-      `SUMMARY:${title}`,
-      `DESCRIPTION:${details}`,
-      `LOCATION:${wedding.venue}`,
-      "END:VEVENT",
-      "END:VCALENDAR",
-    ].join("\r\n");
-
-    const blob = new Blob([ics], { type: "text/calendar;charset=utf-8" });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement("a");
-    a.href = url;
-    a.download = "wedding.ics";
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-    URL.revokeObjectURL(url);
-  };
-
   return (
     <div className="fixed inset-0 z-[60] flex items-end justify-center bg-black/30 p-4">
       <div className="w-full max-w-[420px] rounded-2xl bg-white p-5 text-center shadow-xl">
@@ -1058,12 +1051,14 @@ function CalendarPrompt({
           {wedding.time}
         </div>
         <div className="mt-4 grid grid-cols-2 gap-3">
-          <button
-            onClick={downloadIcs}
+          <a
+            href="/api/calendar"
+            target="_blank"
+            rel="noreferrer"
             className="rounded-xl border border-[#10354d]/40 px-4 py-3 text-sm text-[#10354d]"
           >
             Apple Calendar
-          </button>
+          </a>
           <a
             href={googleUrl}
             target="_blank"
