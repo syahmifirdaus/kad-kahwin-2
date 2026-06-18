@@ -1,0 +1,249 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>RSVP Attendance</title>
+  <style>
+    :root {
+      --bg: #050505;
+      --panel: #101010;
+      --line: #242424;
+      --text: #f3f3f3;
+      --muted: #9a9a9a;
+      --accent: #ff7a7a;
+      --ok: #58d68d;
+      --no: #ff6b6b;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      background: radial-gradient(circle at top right, #181818 0%, var(--bg) 45%);
+      color: var(--text);
+      font-family: Arial, sans-serif;
+      padding: 22px;
+    }
+
+    .wrap {
+      max-width: 980px;
+      margin: 0 auto;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: 24px;
+      letter-spacing: 0.04em;
+    }
+
+    .meta {
+      margin-top: 8px;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .stats {
+      margin-top: 16px;
+      display: grid;
+      grid-template-columns: repeat(3, minmax(120px, 1fr));
+      gap: 10px;
+    }
+
+    .card {
+      border: 1px solid var(--line);
+      background: var(--panel);
+      border-radius: 12px;
+      padding: 12px;
+    }
+
+    .label {
+      color: var(--muted);
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+
+    .value {
+      margin-top: 6px;
+      font-size: 24px;
+      font-weight: 700;
+    }
+
+    .value.ok { color: var(--ok); }
+    .value.no { color: var(--no); }
+
+    .table-wrap {
+      margin-top: 16px;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      overflow: hidden;
+      background: var(--panel);
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    th, td {
+      padding: 11px 12px;
+      border-bottom: 1px solid var(--line);
+      text-align: left;
+      font-size: 14px;
+    }
+
+    th {
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      font-size: 11px;
+      position: sticky;
+      top: 0;
+      background: #121212;
+      z-index: 1;
+    }
+
+    tr:last-child td { border-bottom: none; }
+
+    .pill {
+      display: inline-block;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      padding: 3px 9px;
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    .pill.yes { color: var(--ok); border-color: #1f4d35; }
+    .pill.no { color: var(--no); border-color: #5a2525; }
+
+    .empty {
+      color: var(--muted);
+      text-align: center;
+      padding: 24px;
+    }
+
+    .error {
+      margin-top: 10px;
+      color: var(--accent);
+      font-size: 13px;
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <h1>RSVP Attendance</h1>
+    <div class="meta" id="meta">Loading...</div>
+    <div class="error" id="error"></div>
+
+    <div class="stats">
+      <div class="card">
+        <div class="label">Total RSVP</div>
+        <div class="value" id="totalCount">0</div>
+      </div>
+      <div class="card">
+        <div class="label">Hadir (Pax)</div>
+        <div class="value ok" id="hadirCount">0</div>
+      </div>
+      <div class="card">
+        <div class="label">Tidak Hadir</div>
+        <div class="value no" id="takCount">0</div>
+      </div>
+    </div>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Pax</th>
+            <th>Attending</th>
+            <th>Created</th>
+          </tr>
+        </thead>
+        <tbody id="rows"></tbody>
+      </table>
+      <div class="empty" id="empty" style="display:none;">No RSVP data.</div>
+    </div>
+  </div>
+
+  <script>
+    const SUPABASE_URL = "https://lufcnosckeepwxhdzzzz.supabase.co";
+    const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imx1ZmNub3Nja2VlcHd4aGR6enp6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODE3MDI3MzIsImV4cCI6MjA5NzI3ODczMn0.4AKxgeC03zt4lPX9i339kyvBZzmYZOi7Sw8-zSdhuzg";
+
+    async function loadRSVP() {
+      const meta = document.getElementById("meta");
+      const errorEl = document.getElementById("error");
+      const rowsEl = document.getElementById("rows");
+      const emptyEl = document.getElementById("empty");
+      errorEl.textContent = "";
+
+      try {
+        const url = `${SUPABASE_URL}/rest/v1/rsvp?select=name,pax,attending,created_at&order=created_at.desc.nullslast`;
+        const res = await fetch(url, {
+          headers: {
+            apikey: SUPABASE_ANON_KEY,
+            Authorization: `Bearer ${SUPABASE_ANON_KEY}`,
+          },
+        });
+
+        if (!res.ok) {
+          const text = await res.text();
+          throw new Error(text || `HTTP ${res.status}`);
+        }
+
+        const data = await res.json();
+        rowsEl.innerHTML = "";
+
+        let hadirPax = 0;
+        let takCount = 0;
+
+        (data || []).forEach((r) => {
+          const attending = String(r.attending || "").toLowerCase();
+          const pax = Number(r.pax || 0);
+          if (attending === "yes") hadirPax += pax;
+          if (attending === "no") takCount += 1;
+
+          const tr = document.createElement("tr");
+          tr.innerHTML = `
+            <td>${escapeHtml(r.name || "-")}</td>
+            <td>${Number.isFinite(pax) ? pax : "-"}</td>
+            <td>${pill(attending)}</td>
+            <td>${r.created_at ? new Date(r.created_at).toLocaleString() : "-"}</td>
+          `;
+          rowsEl.appendChild(tr);
+        });
+
+        document.getElementById("totalCount").textContent = String((data || []).length);
+        document.getElementById("hadirCount").textContent = String(hadirPax);
+        document.getElementById("takCount").textContent = String(takCount);
+
+        emptyEl.style.display = (data || []).length ? "none" : "block";
+        meta.textContent = `Auto refresh every 5s. Last update: ${new Date().toLocaleTimeString()}`;
+      } catch (err) {
+        errorEl.textContent = `Failed to load RSVP: ${String(err.message || err)}`;
+        meta.textContent = `Retrying... Last attempt: ${new Date().toLocaleTimeString()}`;
+      }
+    }
+
+    function pill(attending) {
+      if (attending === "yes") return `<span class="pill yes">Hadir</span>`;
+      if (attending === "no") return `<span class="pill no">Tidak Hadir</span>`;
+      return `<span class="pill">-</span>`;
+    }
+
+    function escapeHtml(str) {
+      return String(str)
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;")
+        .replaceAll("'", "&#039;");
+    }
+
+    loadRSVP();
+    setInterval(loadRSVP, 5000);
+  </script>
+</body>
+</html>
