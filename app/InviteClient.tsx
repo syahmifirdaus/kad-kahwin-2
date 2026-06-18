@@ -71,19 +71,20 @@ export default function InviteClient() {
       bride: "HANIS",
       dateText: "JUMAAT • 24.07.26",
       hijriText: "9 Safar 1448H",
-      venue: "Savanna Hill Resort\nAlamanda Ballroom, Level 6\nUlu Tiram, Johor",
-      time: "11:00 AM – 4:00 PM",
+      venue:
+        "Grand Ballroom Bora Ombak\nJalan P5/5, Presint 5\n62200 Putrajaya\nWilayah Persekutuan Putrajaya",
+      time: "8:00 PM – 11:00 PM",
       phone1: "+60123456789",
       wazeUrl:
-        "https://www.waze.com/live-map/directions/savannah-hill-resort-jalan-nasiman-1516-ulu-tiram?to=place.w.68091920.680853663.8007471&from=ll.2.92530347%2C101.70618445&utm_medium=lm_share_directions&utm_campaign=default&utm_source=waze_website",
+        "https://www.waze.com/live-map/directions/my/wilayah-persekutuan-putrajaya/putrajaya/boraombak-@-marina-putrajaya-or-wedding-and-event-venue?to=place.ChIJFbvEIAC3zTER3kbhFGin_dg",
       googleMapUrl:
-        "https://www.google.com/maps/dir//Savanna+Hill+Resort,+1516,+Jalan+Nasiman,+Batu+18,+Kampung+Sungai+Tiram,+81800+Ulu+Tiram,+Johor+Darul+Ta'zim/@1.5907864,103.88636,17z/data=!4m20!1m10!3m9!1s0x31da684af6104a79:0xefaed07c96ecccfd!2sSavanna+Hill+Resort!5m2!4m1!1i2!8m2!3d1.5907864!4d103.8889349!16s%2Fg%2F11b7q4rc5g!4m8!1m0!1m5!1m1!1s0x31da684af6104a79:0xefaed07c96ecccfd!2m2!1d103.8887704!2d1.5907524!3e0?entry=ttu&g_ep=EgoyMDI2MDQyMi4wIKXMDSoASAFQAw%3D%3D",
+        "https://www.google.com/maps/dir/BoraOmbak+@+Marina+Putrajaya+%7C+Wedding+%26+Event+Venue,+1,+Jalan+P5%2F5,+Presint+5,+62200+Putrajaya/DoubleTree+by+Hilton+Putrajaya+Lakeside,+2,+Jalan+P5%2F5,+Presint+5,+62200+Putrajaya/@2.9007971,101.6678383,17z/data=!3m1!4b1!4m14!4m13!1m5!1m1!1s0x31cdb70020c4bb15:0xd8fda76814e146de!2m2!1d101.6703671!2d2.9012895!1m5!1m1!1s0x31cdb73cc743b8c9:0xac4d51cd6418d93f!2m2!1d101.6697543!2d2.9003165!3e0?entry=ttu&g_ep=EgoyMDI2MDYxNi4wIKXMDSoASAFQAw%3D%3D",
       videoUrl: "https://example.com/video",
 
       parentsTitle: "Walimatul Urus",
-      parentsLine: "Kamarudin Kamid\n&\nKhalijah Mohd Yusof",
+      parentsLine: "Mat Rani bin Abd Latif\n&\nFadzilah bt Teh",
       childLine:
-        "Nurhanis Suraya binti Kamarudin\n&\nMuhammad Syahmi Firdaus bin Mat Rani",
+        "Muhammad Syahmi Firdaus bin Mat Rani\n&\nNurhanis Suraya binti Kamarudin",
       introText:
         "Dengan penuh kesyukuran, kami mempersilakan\nDato' | Datin | Tuan | Puan | Encik | Cik\nseisi keluarga hadir ke majlis perkahwinan\nanakanda kami",
 
@@ -91,8 +92,8 @@ export default function InviteClient() {
       dateTitle: "TARIKH",
       timeTitle: "WAKTU",
       dateISO: "2026-07-24",
-      startTime: "11:00",
-      endTime: "17:00",
+      startTime: "20:00",
+      endTime: "23:00",
       timezone: "Asia/Kuala_Lumpur",
 
       // file must be: public/theme/blue .jpg
@@ -473,24 +474,21 @@ export default function InviteClient() {
               value={fullName}
               onChange={(e) => setFullName(e.target.value)}
             />
-            <div className="select-wrap">
-              <select
-                className="input input-select"
-                value={attending}
-                onChange={(e) => setAttending(e.target.value)}
-              >
-                <option value="yes">Hadir</option>
-                <option value="no">Tidak Hadir</option>
-              </select>
-            </div>
-            <input
-              className="input"
-              type="text"
-              inputMode="numeric"
-              pattern="[0-9]*"
-              placeholder="Jumlah pax"
+            <ThemedSelect
+              value={attending}
+              options={[
+                { value: "yes", label: "Hadir" },
+                { value: "no", label: "Tidak Hadir" },
+              ]}
+              onChange={setAttending}
+            />
+            <ThemedSelect
               value={paxInput}
-              onChange={(e) => setPaxInput(e.target.value.replace(/[^0-9]/g, ""))}
+              options={[
+                { value: "1", label: "1 pax" },
+                { value: "2", label: "2 pax" },
+              ]}
+              onChange={setPaxInput}
             />
 
             <button
@@ -540,13 +538,62 @@ export default function InviteClient() {
               width: 10px;
               height: 10px;
               margin-top: -7px;
-              border-right: 2px solid rgba(31, 31, 31, 0.8);
-              border-bottom: 2px solid rgba(31, 31, 31, 0.8);
+              border-right: 2px solid rgba(16, 53, 77, 0.85);
+              border-bottom: 2px solid rgba(16, 53, 77, 0.85);
               transform: rotate(45deg);
               pointer-events: none;
             }
             .input-select {
               padding-right: 42px;
+            }
+            .themed-select {
+              position: relative;
+              z-index: 1;
+            }
+            .themed-select.is-open {
+              z-index: 30;
+            }
+            .themed-select-trigger {
+              cursor: pointer;
+              text-align: left;
+            }
+            .themed-select-menu {
+              position: absolute;
+              left: 0;
+              right: 0;
+              top: calc(100% + 8px);
+              overflow: hidden;
+              border-radius: 14px;
+              border: 1px solid rgba(16, 53, 77, 0.22);
+              background: rgba(247, 251, 253, 0.96);
+              box-shadow: 0 18px 38px rgba(9, 40, 61, 0.2);
+              backdrop-filter: blur(10px);
+            }
+            .themed-select-option {
+              display: flex;
+              width: 100%;
+              align-items: center;
+              gap: 10px;
+              border: 0;
+              background: transparent;
+              padding: 12px 14px;
+              color: #10354d;
+              font: inherit;
+              text-align: left;
+              font-size: 16px;
+            }
+            .themed-select-option + .themed-select-option {
+              border-top: 1px solid rgba(16, 53, 77, 0.1);
+            }
+            .themed-select-option:hover,
+            .themed-select-option:focus-visible {
+              background: rgba(16, 53, 77, 0.08);
+              outline: none;
+            }
+            .themed-select-check {
+              width: 18px;
+              color: #10354d;
+              font-weight: 700;
             }
             .fade-in {
               opacity: 0;
@@ -599,9 +646,8 @@ export default function InviteClient() {
         <CallPrompt
           onClose={() => setShowCallPrompt(false)}
           options={[
-            { name: "Kamarudin", phone: "0193862094" },
-            { name: "Khalijah", phone: "0196537768" },
-            { name: "Hidayah", phone: "0176292450" },
+            { name: "Mat Rani", phone: "0182492311" },
+            { name: "Fadzilah", phone: "0183846277" },
           ]}
         />
       ) : null}
@@ -650,6 +696,75 @@ function Section({ children, delay = 0 }: { children: React.ReactNode; delay?: n
     >
       {children}
     </section>
+  );
+}
+
+function ThemedSelect({
+  value,
+  options,
+  onChange,
+}: {
+  value: string;
+  options: Array<{ value: string; label: string }>;
+  onChange: (value: string) => void;
+}) {
+  const [open, setOpen] = useState(false);
+  const rootRef = React.useRef<HTMLDivElement | null>(null);
+  const selected = options.find((option) => option.value === value) ?? options[0];
+
+  useEffect(() => {
+    if (!open) return;
+
+    const closeOnOutside = (event: MouseEvent | TouchEvent) => {
+      if (!rootRef.current?.contains(event.target as Node)) setOpen(false);
+    };
+    const closeOnEscape = (event: KeyboardEvent) => {
+      if (event.key === "Escape") setOpen(false);
+    };
+
+    document.addEventListener("mousedown", closeOnOutside);
+    document.addEventListener("touchstart", closeOnOutside);
+    document.addEventListener("keydown", closeOnEscape);
+    return () => {
+      document.removeEventListener("mousedown", closeOnOutside);
+      document.removeEventListener("touchstart", closeOnOutside);
+      document.removeEventListener("keydown", closeOnEscape);
+    };
+  }, [open]);
+
+  return (
+    <div ref={rootRef} className={`select-wrap themed-select ${open ? "is-open" : ""}`}>
+      <button
+        type="button"
+        className="input input-select themed-select-trigger"
+        aria-haspopup="listbox"
+        aria-expanded={open}
+        onClick={() => setOpen((current) => !current)}
+      >
+        {selected.label}
+      </button>
+
+      {open ? (
+        <div className="themed-select-menu" role="listbox">
+          {options.map((option) => (
+            <button
+              key={option.value}
+              type="button"
+              className="themed-select-option"
+              role="option"
+              aria-selected={option.value === value}
+              onClick={() => {
+                onChange(option.value);
+                setOpen(false);
+              }}
+            >
+              <span className="themed-select-check">{option.value === value ? "✓" : ""}</span>
+              <span>{option.label}</span>
+            </button>
+          ))}
+        </div>
+      ) : null}
+    </div>
   );
 }
 
@@ -779,8 +894,7 @@ function LocationPrompt({
   onClose: () => void;
 }) {
   const openWaze = () => {
-    const appUrl = "waze://?q=Savannah%20Hill%20Resort%2C%20Ulu%20Tiram&navigate=yes";
-    window.location.href = appUrl;
+    window.open(wazeUrl, "_blank", "noopener,noreferrer");
     onClose();
   };
 
