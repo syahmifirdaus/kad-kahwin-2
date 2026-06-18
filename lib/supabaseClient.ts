@@ -6,7 +6,7 @@ const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
 const missingSupabaseEnv = !supabaseUrl || !supabaseAnonKey;
 
 if (missingSupabaseEnv && typeof window !== "undefined") {
-  throw new Error("Missing NEXT_PUBLIC_SUPABASE_URL or NEXT_PUBLIC_SUPABASE_ANON_KEY");
+  console.error("Missing NEXT_PUBLIC_SUPABASE_URL or NEXT_PUBLIC_SUPABASE_ANON_KEY");
 }
 
 export const supabase = createClient(supabaseUrl || "https://localhost", supabaseAnonKey || "missing-anon-key");
