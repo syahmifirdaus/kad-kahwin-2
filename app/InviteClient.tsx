@@ -1098,17 +1098,17 @@ function CalendarPrompt({
 
 function ThanksPrompt({ onClose }: { onClose: () => void }) {
   return (
-    <div className="fixed inset-0 z-[60] flex items-center justify-center bg-black/32 p-6">
-      <div className="w-full max-w-[380px] rounded-[28px] bg-white px-8 py-10 text-center shadow-2xl">
-        <div className="font-playfair-bold text-[30px] font-semibold leading-tight text-[#d78391]">
+    <div className="fixed inset-0 z-[60] flex items-center justify-center bg-[#0b2436]/32 p-6">
+      <div className="w-full max-w-[320px] rounded-[22px] border border-[#10354d]/15 bg-white/94 px-7 py-8 text-center shadow-xl backdrop-blur">
+        <div className="font-playfair-bold text-[22px] font-semibold leading-tight text-[#10354d]">
           Terima Kasih!
         </div>
-        <div className="mt-8 font-playfair-regular text-[24px] leading-snug text-black/55">
+        <div className="mt-5 font-playfair-regular text-[17px] leading-snug text-[#2c2a2a]/65">
           RSVP anda telah diterima.
         </div>
         <button
           onClick={onClose}
-          className="mt-10 w-full rounded-[22px] bg-[#ead6c3] py-4 font-playfair-regular text-[24px] text-[#2c2a2a]"
+          className="mt-7 w-full rounded-[16px] bg-[#10354d] py-3 font-playfair-regular text-[18px] text-white"
         >
           Tutup
         </button>
