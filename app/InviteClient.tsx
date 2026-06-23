@@ -69,7 +69,7 @@ export default function InviteClient() {
     () => ({
       groom: "SYAHMI",
       bride: "HANIS",
-      dateText: "JUMAAT • 24.07.26",
+      dateText: "JUMAAT • 24.07.20266",
       hijriText: "9 Safar 1448H",
       venue:
         "Grand Ballroom Bora Ombak\nJalan P5/5, Presint 5\n62200 Putrajaya\nWilayah Persekutuan Putrajaya",
@@ -81,7 +81,7 @@ export default function InviteClient() {
       videoUrl: "https://example.com/video",
 
       parentsTitle: "Walimatul Urus",
-      parentsLine: "Mat Rani bin Abd Latif\n&\nFadzilah bt Teh",
+      parentsLine: "Mat Rani bin Abd Latif\n&\nFadzilah binti Teh",
       childLine:
         "Muhammad Syahmi Firdaus bin Mat Rani\n&\nNurhanis Suraya binti Kamarudin",
       introText:
