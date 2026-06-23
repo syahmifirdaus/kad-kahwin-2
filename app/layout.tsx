@@ -16,21 +16,21 @@ export const metadata: Metadata = {
   title: "Walimatul Urus Hanis & Syahmi",
   description: "kad-kahwin",
   icons: {
-    icon: "/preview.png",
-    shortcut: "/preview.png",
-    apple: "/preview.png",
+    icon: "/kad kahwin cover.png",
+    shortcut: "/kad kahwin cover.png",
+    apple: "/kad kahwin cover.png",
   },
   openGraph: {
     title: "Walimatul Urus Hanis & Syahmi",
     description: "kad-kahwin",
-    images: ["/preview.png"],
+    images: ["/kad kahwin cover.png"],
     type: "website",
   },
   twitter: {
     card: "summary_large_image",
     title: "Walimatul Urus Hanis & Syahmi",
     description: "kad-kahwin",
-    images: ["/preview.png"],
+    images: ["/kad kahwin cover.png"],
   },
 };
 
