@@ -69,7 +69,7 @@ export default function InviteClient() {
     () => ({
       groom: "SYAHMI",
       bride: "HANIS",
-      dateText: "JUMAAT • 24.07.20266",
+      dateText: "JUMAAT • 24.07.2026",
       hijriText: "9 Safar 1448H",
       venue:
         "Grand Ballroom Bora Ombak\nJalan P5/5, Presint 5\n62200 Putrajaya\nWilayah Persekutuan Putrajaya",
