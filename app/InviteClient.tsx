@@ -73,7 +73,7 @@ export default function InviteClient() {
       hijriText: "9 Safar 1448H",
       venue:
         "Grand Ballroom Bora Ombak\nJalan P5/5, Presint 5\n62200 Putrajaya\nWilayah Persekutuan Putrajaya",
-      time: "8:00 PM – 11:00 PM",
+      time: "8:00 PM – 10:30 PM",
       phone1: "+60123456789",
       wazeUrl: "waze://?ll=2.9012895,101.6703671&navigate=yes",
       googleMapUrl:
